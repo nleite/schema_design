@@ -138,6 +138,12 @@ def store_products(products, categories, schema, mc):
     save_many( categories, db['categories'] )
 
 
+def polymorphic_schema(product):
+    """
+    Removes all null and empty array fields.
+    """
+    return {k: v for k,v in product.iteritems() if v not in [None, "", [] ]}
+
 
 def main():
 
@@ -148,14 +154,15 @@ def main():
     print(mc.server_info())
 
 
-    products = process_products("./data/products_20k.json")
+    products = process_products("./data/products_10k.json")
     categories = process_categories("./data/categories.json")
 
-    store_products(products, categories, attributes_schema, mc)
+    #store_products(products, categories, attributes_schema, mc)
+    store_products(products, categories,  polymorphic_schema, mc)
 
-    store_categories(categories, products, normalized, mc)
-    store_categories(categories, products, subset_schema, mc)
-    store_categories(categories, products, subset_schema_light, mc)
+    #store_categories(categories, products, normalized, mc)
+    #store_categories(categories, products, subset_schema, mc)
+    #store_categories(categories, products, subset_schema_light, mc)
 
 
 
